@@ -15,8 +15,9 @@ struct ContentView: View {
         var moreInfo: String
         var dueBy: Date?
     }
-    @State private var newTodo = ""
-    @State private var toDoList : [ToDo] = [ToDo(todo: "Todo 1", doneToggle: false, moreInfo: "more info"), ToDo(todo: "Todo 2", doneToggle: true, moreInfo: "moreinfo", dueBy: nil) ]
+    @State private var newTodo: String = ""
+    @State private var taskListDescription: String = "The list of fun things - Toggle them on and off"
+    @State private var toDoList : [ToDo] = [ToDo(todo: "Example todo 1", doneToggle: false, moreInfo: "more info"), ToDo(todo: "Example todo 2", doneToggle: true, moreInfo: "moreinfo", dueBy: nil), ToDo(todo: "Example todo today", doneToggle: false, moreInfo: "moreinfo", dueBy: Date()) ]
     
     private func sortTodosByDone() {
         toDoList.sort { $0.doneToggle && !$1.doneToggle}
@@ -41,7 +42,7 @@ struct ContentView: View {
         }()
         NavigationView {
             List{
-                Text("The list of fun things - Toggle them on and off")
+                TextField("Task list description", text: $taskListDescription, axis: .vertical)
                     .font(.subheadline)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
@@ -59,13 +60,11 @@ struct ContentView: View {
                     HStack{
                     Button(action: {
                         sortTodosByDate()
-                    }) {
-                        Text("Sort By Date")}
-                        Spacer()
+                    }) {Text("Sort By Date")}
+                    Spacer()
                     Button(action: {
                         sortTodosByDone()
-                    }) {
-                        Text("Sort By Done")}
+                    }) {Text("Sort By Done")}
                     }
                     ForEach(toDoList.indices, id:\.self) {index in
                         let toDoInstance = $toDoList[index]
@@ -98,7 +97,7 @@ struct ContentView: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .edgesIgnoringSafeArea(.top)}
                     })
-            }
+        }
         }
     }
     
